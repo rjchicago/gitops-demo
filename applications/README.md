@@ -1,4 +1,4 @@
-# GUI Applications
+# Applications
 
 ## Convention
 

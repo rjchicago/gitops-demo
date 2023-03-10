@@ -1,4 +1,4 @@
-# GUI Infrastructure
+# Infrastructure
 
 ## Convention
 
