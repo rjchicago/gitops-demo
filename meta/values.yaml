@@ -1,0 +1,25 @@
+namespace: argocd
+production: production
+projects:
+  infrastructure: gui-infrastructure
+  applications: gui-applications
+
+roles:
+- public
+- private
+- global
+globalRole: global
+
+source:
+  repo: https://github.com/rjchicago/gitops-demo.git
+  paths:
+    infrastructure: infrastructure
+    applications: applications
+  branch: alpha
+
+destinations:
+- cluster: cluster name
+  server: server url
+  dc: local|ord|sjc
+  role: private|public
+  env: local|dev|production

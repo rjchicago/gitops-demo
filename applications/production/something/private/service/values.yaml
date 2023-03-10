@@ -1,0 +1,7 @@
+image: nginx:1.23-alpine
+configGlob: config/*
+service:
+  type: ClusterIP
+  port: 80
+  path: /
+mountPath: /etc/nginx/templates

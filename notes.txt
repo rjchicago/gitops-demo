@@ -1,0 +1,43 @@
+
+apps
+* infrastructure
+* applications
+
+k8s envs
+* dev
+* production
+
+data centers
+* ord
+* sjc
+
+network envs
+* private
+* public
+
+application envs
+* int
+* qa1
+* qa2
+* stage
+* production
+
+
+
+
++ apps
+  + infrastructure
+    + global
+    + private
+    + public
+  + applications
+    + int
+    + qa1
+    + qa2
+    + stage
+    + production
+      + zip
+        + private
+        + public
++ meta
+

@@ -1,0 +1,11 @@
+apiVersion: v2
+name: reloader
+version: 0.0.1
+
+dependencies:
+- repository: https://stakater.github.io/stakater-charts
+  name: reloader
+  version: 1.0.12
+
+# # run
+# helm dependency build k8s/apps/reloader

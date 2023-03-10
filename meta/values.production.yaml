@@ -1,0 +1,24 @@
+source:
+  branch: main
+
+destinations:
+- cluster: dev-ord-private
+  server: https://kubernetes.default.svc
+  dc: ord
+  role: private
+  env: dev
+- cluster: dev-ord-public
+  server: https://kubernetes.default.svc
+  dc: ord
+  role: public
+  env: dev
+- cluster: production-ord-private
+  server: https://kubernetes.default.svc
+  dc: ord
+  role: private
+  env: production
+- cluster: production-ord-public
+  server: https://kubernetes.default.svc
+  dc: ord
+  role: public
+  env: production

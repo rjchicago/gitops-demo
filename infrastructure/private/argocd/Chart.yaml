@@ -1,0 +1,11 @@
+apiVersion: v2
+name: argocd
+version: 0.0.1
+
+dependencies:
+- repository: https://argoproj.github.io/argo-helm
+  name: argo-cd
+  version: 5.24.1
+
+# # run
+# helm dependency build k8s/apps/argocd

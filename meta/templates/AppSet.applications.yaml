@@ -1,0 +1,53 @@
+{{- $ := . }}
+{{- range $destination := $.Values.destinations }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ printf "%s-%s-%s" $.Values.projects.applications $destination.role $destination.env }}
+  namespace: {{ $.Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-97"
+spec:
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: {{ $.Values.source.repo }}
+          revision: {{ $.Values.source.branch }}
+          directories:
+          {{- if eq $destination.env $.Values.production }}
+          - path: {{ printf "%s/%s/*/%s/*" $.Values.source.paths.applications $.Values.production $destination.role }}
+          {{- else }}
+          - path: {{ printf "%s/*/*/%s/*" $.Values.source.paths.applications $destination.role }}
+          - path: {{ printf "%s/%s/*/%s/*" $.Values.source.paths.applications $.Values.production $destination.role }}
+            exclude: true
+          {{- end }}
+      - list:
+          elements:
+          - cluster: {{ $destination.cluster }}
+            server: {{ $destination.server }}
+
+  template:
+    metadata:
+      name: {{ printf "'{{path[2]}}-{{path[3]}}-{{path.basename}}'" }}
+      labels:
+        env: {{ printf "'{{path[2]}}'" }}
+        role: {{ $destination.role }}
+        cluster: {{ printf "'{{cluster}}'" }}
+    spec:
+      project: {{ $.Values.projects.applications }}
+      source:
+        repoURL: {{ $.Values.source.repo }}
+        targetRevision: {{ $.Values.source.branch }}
+        path: {{ printf "'{{path}}'" }}
+      destination:
+        server: {{ printf "'{{server}}'" }}
+        namespace: {{ printf "'{{path[2]}}-{{path[3]}}'" }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+{{- end}}

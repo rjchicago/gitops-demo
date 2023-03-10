@@ -1,0 +1,6 @@
+apiVersion: v2
+version: 0.1.0
+name: nginx-demo
+description: Demo Nginx App
+type: application
+appVersion: "0.1.0"

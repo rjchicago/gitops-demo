@@ -1,0 +1,27 @@
+apiVersion: k3d.io/v1alpha4
+kind: Simple
+metadata:
+  name: public
+servers: 1
+agents: 3
+image: rancher/k3s:latest
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
+kubeAPI: # same as `--api-port myhost.my.domain:6445` (where the name would resolve to 127.0.0.1)
+  host: "localhost" # important for the `server` setting in the kubeconfig
+  hostIP: "0.0.0.0" # where the Kubernetes API will be listening on
+  hostPort: "6446" # where the Kubernetes API listening port will be mapped to on your host system
+options:
+  k3d:
+    wait: true
+    timeout: "300s"
+  k3s:
+    extraArgs:
+      - arg: --node-taint=node-role.kubernetes.io/master:NoSchedule
+        nodeFilters:
+          - server:*
+  kubeconfig:
+    updateDefaultKubeconfig: true # add cluster to default Kubeconfig; same as `--kubeconfig-update-default` (default: true)
+    switchCurrentContext: true # set current-context to new cluster's context; same as `--kubeconfig-switch-context` (default: true)

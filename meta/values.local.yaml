@@ -1,0 +1,14 @@
+source:
+  branch: main
+
+destinations:
+- cluster: local
+  server: https://kubernetes.default.svc
+  dc: local
+  role: private
+  env: dev
+- cluster: local
+  server: https://kubernetes.default.svc
+  dc: local
+  role: public
+  env: dev

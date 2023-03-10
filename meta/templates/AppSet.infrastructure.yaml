@@ -1,0 +1,54 @@
+{{- $ := . }}
+{{- range $role := $.Values.roles }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ printf "%s-%s" $.Values.projects.infrastructure $role }}
+  namespace: {{ $.Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-98"
+spec:
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: {{ $.Values.source.repo }}
+          revision: {{ $.Values.source.branch }}
+          directories:
+          - path: {{ printf "%s/%s/*" $.Values.source.paths.infrastructure $role }}
+      - list:
+          elements:
+          {{- range $destination := $.Values.destinations }}
+          {{- if hasKey (dict $destination.role "" $.Values.globalRole "") $role }}
+          - cluster: {{ $destination.cluster }}
+            server: {{ $destination.server }}
+          {{- end }}
+          {{- end }}
+
+  template:
+    metadata:
+      name: {{ printf "'{{path.basename}}'" }}
+      annotations:
+        argocd.argoproj.io/sync-wave: "-1"
+      labels:
+        cluster: {{ printf "'{{cluster}}'" }}
+    spec:
+      project: {{ $.Values.projects.infrastructure }}
+      source:
+        repoURL: {{ $.Values.source.repo }}
+        targetRevision: {{ $.Values.source.branch }}
+        path: {{ printf "'{{path}}'" }}
+        helm:
+          valueFiles:
+          - {{ printf "'values.{{cluster}}.yaml'" }}
+      destination:
+        server: {{ printf "'{{server}}'" }}
+        namespace: {{ printf "'{{path.basename}}'" }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+{{- end}}
