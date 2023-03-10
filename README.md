@@ -1,6 +1,6 @@
-# GitOps
+# GitOps Demo
 
-`GitOps` follows the [monorepo](https://en.wikipedia.org/wiki/Monorepo) pattern and is integrated with [Argo CD](https://argo-cd.readthedocs.io/en/stable/) to deploy infrastructure and applications to [Kubernetes](https://kubernetes.io/) clusters following [GitOps](https://www.gitops.tech/) principles.
+`GitOps Demo` follows the [monorepo](https://en.wikipedia.org/wiki/Monorepo) pattern and is integrated with [Argo CD](https://argo-cd.readthedocs.io/en/stable/) to deploy infrastructure and applications to [Kubernetes](https://kubernetes.io/) clusters following [GitOps](https://www.gitops.tech/) principles.
 
 ## What is GitOps?
 
