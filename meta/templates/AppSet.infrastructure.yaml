@@ -20,7 +20,7 @@ spec:
       - list:
           elements:
           {{- range $destination := $.Values.destinations }}
-          {{- if hasKey (dict $destination.role "" $.Values.globalRole "") $role }}
+          {{- if has $role (tuple $destination.role "global") }}
           - cluster: {{ $destination.cluster }}
             server: {{ $destination.server }}
           {{- end }}
